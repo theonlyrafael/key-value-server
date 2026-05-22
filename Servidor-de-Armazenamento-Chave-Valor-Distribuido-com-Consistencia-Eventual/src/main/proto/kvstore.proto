@@ -1,0 +1,46 @@
+syntax = "proto3";
+package kvstore;
+
+option java_multiple_files = true;
+option java_outer_classname = "Kvstore"; // opcional; pode manter
+
+
+// Serviço principal
+service KvStore {
+  rpc Put (PutRequest) returns (PutResponse);
+  rpc Get (GetRequest) returns (GetResponse);
+}
+
+// ---------- Estruturas de dados ----------
+message VectorClockEntry {
+  string node_id = 1;
+  uint64 counter = 2;
+}
+message VectorClock {
+  repeated VectorClockEntry entries = 1;
+}
+message Version {
+  string value = 1;
+  VectorClock vector_clock = 2; // pode vir vazio no PUT do cliente
+  uint64 timestamp = 3;         // nanos desde epoch
+  string writer_node_id = 4;
+}
+
+// ---------- Requisições ----------
+message PutRequest {
+  string key = 1;
+  string value = 2;
+}
+message GetRequest {
+  string key = 1;
+}
+
+// ---------- Respostas ----------
+message PutResponse {
+  bool success = 1;
+  string error_message = 2;
+}
+message GetResponse {
+  repeated Version versions = 1;
+  string error_message = 2;
+}
