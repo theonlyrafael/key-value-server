@@ -15,10 +15,22 @@ sudo apt-get update
 sudo apt-get install -y mosquitto
 mosquitto -v    # inicia broker local (porta 1883)
 ```
+### Instalar Mosquitto (Windows)
+O gerenciador de pacotes `winget` nativo do Windows 11 é a forma mais rápida de instalar o broker pelo terminal (PowerShell ou Prompt de Comando):
+```bash
+winget install EclipseFoundation.Mosquitto
+```
+*(Alternativamente, baixe o instalador `.exe` em https://mosquitto.org/download/)*.
+Após instalar, navegue até a pasta de instalação (geralmente `C:\Program Files\mosquitto`) e digite `mosquitto -v` para iniciar o broker.
 
 ## Compilar
 ```bash
 ./compile.sh
+```
+
+**Para Windows (utilizando o terminal Git Bash):**
+```bash
+bash compile.sh
 ```
 
 ## Executar
@@ -30,6 +42,15 @@ Em dois terminais diferentes (com o broker rodando):
 
 # Nó B
 ./server.sh --node-id node_B --listen-addr 127.0.0.1:50052             --mqtt-broker-addr 127.0.0.1 --mqtt-broker-port 1883
+```
+
+**Para Windows (utilizando o terminal Git Bash):**
+```bash
+# Nó A
+bash server.sh --node-id node_A --listen-addr 127.0.0.1:50051          --mqtt-broker-addr 127.0.0.1 --mqtt-broker-port 1883
+
+# Nó B
+bash server.sh --node-id node_B --listen-addr 127.0.0.1:50052          --mqtt-broker-addr 127.0.0.1 --mqtt-broker-port 1883
 ```
 
 ## Testar com o Cliente Oficial
@@ -70,6 +91,11 @@ No diretório do cliente oficial:
 ```bash
 chmod +x ../kvstore-server/test_kvstore.sh
 ../kvstore-server/test_kvstore.sh
+```
+
+**Para Windows (utilizando o terminal Git Bash):**
+```bash
+bash ../kvstore-server/test_kvstore.sh
 ```
 
 ### O que o script valida
